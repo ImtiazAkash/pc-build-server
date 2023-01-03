@@ -18,7 +18,7 @@ router.get('/', async(req, res, next) =>{
         let MB = await motherBoard.aggregate(motherboardQuery)
 
         if(MB.length === 0){
-            return res.status(400).json({
+            return res.json({
                 success : false,
                 msg : "no motherboard found"
             })
@@ -27,16 +27,19 @@ router.get('/', async(req, res, next) =>{
 
         //processor
 
-        const processorQuery = [{"$match" : {Price : {$lte:parseInt(req.query.pros)}}},
+        // const processorQuery = [{"$match" : {Price : {$lte:parseInt(req.query.pros)}}},
+        // {"$match" : {"Vendor Name" : {"$eq" : motherObject[0].SupportedCPU}}},
+        // { "$sample": { "size": 1 } }]
+
+        const processorQuery = [{"$match" : {Price : {$lte:parseInt(req.query.pros)+1000, $gte:parseInt(req.query.pros)-1000 }}},
         {"$match" : {"Vendor Name" : {"$eq" : motherObject[0].SupportedCPU}}},
         { "$sample": { "size": 1 } }]
 
         let process = await processor.aggregate(processorQuery)
 
-        // console.log(process);
 
         if(process.length === 0){
-            return res.status(400).json({
+            return res.json({
                 success : false,
                 msg : "no processor found for the suitable motherboard or within the given buidget"
             })
@@ -45,7 +48,7 @@ router.get('/', async(req, res, next) =>{
 
         //Ram
 
-        const ramQuery = [{"$match" : {"Price(tk)" : {$lte:parseInt(req.query.ram)}}},
+        const ramQuery = [{"$match" : {"Price(tk)" : {$lte:parseInt(req.query.ram)+500, $gte:parseInt(req.query.ram)-500}}},
         {"$match" : {"Memory Type" : {"$eq" : motherObject[0].MemoryType}}},
         {"$match" : {"Capacity(GB)" : {"$lte" : motherObject[0]['MaxMemory (GB)']}}},
         { "$sample": { "size": 1 } }]
@@ -53,7 +56,7 @@ router.get('/', async(req, res, next) =>{
         let Ram = await ram.aggregate(ramQuery)
 
         if(Ram.length === 0){
-            return res.status(400).json({
+            return res.json({
                 success : false,
                 msg : "no ram found"
             })
@@ -62,7 +65,7 @@ router.get('/', async(req, res, next) =>{
 
         //power supply
 
-        const powerQuery = [{"$match" : {Price : {$lte:parseInt(req.query.ps)}}},
+        const powerQuery = [{"$match" : {Price : {$lte:parseInt(req.query.ps)+500, $gte:parseInt(req.query.ps)-500}}},
         { "$sample": { "size": 1 } }]
 
         let power = await powerSupply.aggregate(powerQuery)
@@ -71,7 +74,7 @@ router.get('/', async(req, res, next) =>{
         // console.log(power);
 
         if(power.length === 0){
-            return res.status(400).json({
+            return res.json({
                 success : false,
                 msg : "no power supply found"
             })
@@ -79,12 +82,12 @@ router.get('/', async(req, res, next) =>{
 
         //storage
 
-        const storageQuery = [{"$match" : {Price : {$lte:parseInt(req.query.st)}}},
+        const storageQuery = [{"$match" : {Price : {$lte:parseInt(req.query.st)+500, $gte:parseInt(req.query.st)-500}}},
         { "$sample": { "size": 1 } }]
 
         let store = await storage.aggregate(storageQuery)
         if(store.length === 0){
-            return res.status(400).json({
+            return res.json({
                 success : false,
                 msg : "no storage supply found"
             })
@@ -92,23 +95,36 @@ router.get('/', async(req, res, next) =>{
 
         //monitor
 
-        const monitorQuery = [{"$match" : {Price : {$lte:parseInt(req.query.monitor)}}},
+        const monitorQuery = [{"$match" : {Price : {$lte:parseInt(req.query.monitor)+1000, $gte:parseInt(req.query.monitor)-1000}}},
         { "$sample": { "size": 1 } }]
 
 
         const moni = await monitor.aggregate(monitorQuery)
 
         if(moni.length === 0){
-            return res.status(400).json({
+            return res.json({
                 success : false,
                 msg : "no monitor found"
             })
         }
 
 
+        const ramObject = Object.assign({}, Ram)
+        const proObject = Object.assign({}, process)
+        const powerObject = Object.assign({}, power)
+        const storeObject = Object.assign({}, store)
+        const moniObject = Object.assign({}, moni)
+        
+
+        let total = motherObject[0].Price + proObject[0].Price + ramObject[0]["Price(tk)"] + 
+        powerObject[0].Price + storeObject[0].Price + moniObject[0].Price
+
+
 
         res.status(200).json({
             success : true,
+            "total price" : total,
+            msg : "all component found",
             MOTHERBOARD : MB,
             RAM : Ram,
             PROCESSOR : process,
