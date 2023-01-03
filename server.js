@@ -21,12 +21,14 @@ connectDB()
 app.use('/api/auth', require('./routes/user'))
 app.use('/api/getpc', require('./routes/buildPc'))
 app.use('/api/getpc2', require('./routes/buildPc2'))
+app.use('/api/getpcwithgpu', require('./routes/buildWithGpu'))
 app.use('/api/motherboard', require('./routes/motherBoard'))
 app.use('/api/monitor', require('./routes/monitor'))
 app.use('/api/powersupply', require('./routes/powerSupply'))
 app.use('/api/processor', require('./routes/processor'))
 app.use('/api/ram', require('./routes/ram'))
 app.use('/api/storage', require('./routes/storage'))
+app.use('/api/gpu', require('./routes/gpu'))
 
 
 app.use((req, res, next)=>{
