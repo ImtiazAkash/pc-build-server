@@ -20,6 +20,7 @@ connectDB()
 
 app.use('/api/auth', require('./routes/user'))
 app.use('/api/getpc', require('./routes/buildPc'))
+app.use('/api/getpc2', require('./routes/buildPc2'))
 app.use('/api/motherboard', require('./routes/motherBoard'))
 app.use('/api/monitor', require('./routes/monitor'))
 app.use('/api/powersupply', require('./routes/powerSupply'))
