@@ -121,17 +121,38 @@ router.get('/', async(req, res, next) =>{
 
 
 
-        res.status(200).json({
-            success : true,
-            totalPrice : total,
-            msg : "all component found",
-            MOTHERBOARD : motherObject[0],
-            RAM : ramObject[0],
-            PROCESSOR : proObject[0],
-            POWERSUPPLY : powerObject[0],
-            STORAGE : storeObject[0],
-            MONITOR : moniObject[0]
-        })
+        if(req.query.ram <3700){
+
+            res.status(200).json({
+                success : true,
+                msg : "all component found",
+                totalBudget : total,
+                MOTHERBOARD : motherObject[0],
+                RAM : ramObject[0],
+                PROCESSOR : proObject[0],
+                POWERSUPPLY : powerObject[0],
+                SSD : storeSSDObject[0],
+                HDD : storeHDDObject[0],
+                MONITOR : moniObject[0]
+            })
+            
+        }else{
+
+            res.status(200).json({
+                success : true,
+                msg : "all component found",
+                totalBudget : total+ramObject[0].Price,
+                MOTHERBOARD : motherObject[0],
+                RAM1 : ramObject[0],
+                RAM2 : ramObject[0],
+                PROCESSOR : proObject[0],
+                POWERSUPPLY : powerObject[0],
+                SSD : storeSSDObject[0],
+                HDD : storeHDDObject[0],
+                MONITOR : moniObject[0]
+            })
+
+        }
 
     }catch(err){
         console.log(err);

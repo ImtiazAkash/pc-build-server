@@ -146,7 +146,7 @@ router.get('/', async(req, res, next) =>{
         const gpuObject = Object.assign({}, graphics)
         
 
-        let total = motherObject[0].Price + proObject[0].Price + ramObject[0].Price + gpuObject[0].Price +
+        let total = motherObject[0].Price + proObject[0].Price + ramObject[0].Price + ramObject[0].Price + gpuObject[0].Price +
         powerObject[0].Price + storeHDDObject[0].Price + storeSSDObject[0].Price + moniObject[0].Price
 
 
@@ -156,7 +156,8 @@ router.get('/', async(req, res, next) =>{
             msg : "all component found",
             totalBudget : total,
             MOTHERBOARD : motherObject[0],
-            RAM : ramObject[0],
+            RAM1 : ramObject[0],
+            RAM2 : ramObject[0],
             PROCESSOR : proObject[0],
             POWERSUPPLY : powerObject[0],
             SSD : storeSSDObject[0],
@@ -164,6 +165,7 @@ router.get('/', async(req, res, next) =>{
             GRAPHICSCARD : gpuObject[0],
             MONITOR : moniObject[0]
         })
+        
 
     }catch(err){
         console.log(err);
