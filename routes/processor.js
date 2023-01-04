@@ -35,12 +35,12 @@ router.post('/', async(req, res, next) =>{
         
         let processor = new Processor()
 
-        processor['Vendor Name'] = req.body['Vendor Name']
+        processor.VendorName = req.body.VendorName
         processor.Model = req.body.Model
         processor.Cores = req.body.Cores
         processor.Threads = req.body.Threads
-        processor.Generation = req.body.Generation
-        processor['V-RAM'] = req.body['V-RAM']
+        processor.Series = req.body.Series
+        processor.VideoRam = req.body.VideoRam
         processor.Price = req.body.Price
 
         await processor.save()

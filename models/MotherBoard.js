@@ -24,7 +24,7 @@ const MotherBoardSchema = new mongoose.Schema({
             message   : '{VALUE} is not an integer value'
         }
     },
-    "MaxMemory (GB)" : {
+    MaxMemory : {
         require : true,
         type : Number,
 
@@ -46,15 +46,6 @@ const MotherBoardSchema = new mongoose.Schema({
         require : true,
         type : String
         
-    },
-    Gen : {
-        type : Number,
-        require : true,
-
-        validate : {
-            validator : Number.isInteger,
-            message   : '{VALUE} is not an integer value'
-        }
     }
 
 

@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 const ProcessorSchema = new mongoose.Schema({
 
-    "Vendor Name" : {
+    VendorName : {
         require : true,
         type : String
     },
@@ -29,7 +29,7 @@ const ProcessorSchema = new mongoose.Schema({
             message   : '{VALUE} is not an integer value'
         }
     },
-    Generation : {
+    Series : {
         require : true,
         type : Number,
 
@@ -38,7 +38,7 @@ const ProcessorSchema = new mongoose.Schema({
             message   : '{VALUE} is not an integer value'
         }
     },
-    "V-RAM" : {
+    VideoRam : {
         require : true,
         type : String
         

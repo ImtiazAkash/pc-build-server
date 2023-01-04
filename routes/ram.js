@@ -35,12 +35,12 @@ router.post('/', async(req, res, next) =>{
         
         let ram = new Ram()
 
-        ram['Vendor Name'] = req.body['Vendor Name']
+        ram.VendorName = req.body.VendorName
         ram.Model = req.body.Model
-        ram['Memory Type'] = req.body['Memory Type']
-        ram['Bus Speed(Mhz)'] = req.body['Bus Speed(Mhz)']
-        ram['Capacity(GB)'] = req.body['Capacity(GB)']
-        ram['Price(tk)'] = req.body['Price(tk)']
+        ram.MemoryType = req.body.MemoryType
+        ram.BusSpeed = req.body.BusSpeed
+        ram.Capacity = req.body.Capacity
+        ram.Price = req.body.Price
 
         await ram.save()
 

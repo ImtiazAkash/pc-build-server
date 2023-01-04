@@ -32,7 +32,7 @@ router.get('/', async(req, res, next) =>{
         // { "$sample": { "size": 1 } }]
 
         const processorQuery = [{"$match" : {Price : {$lte:parseInt(req.query.pros)+1000, $gte:parseInt(req.query.pros)-1000 }}},
-        {"$match" : {"Vendor Name" : {"$eq" : motherObject[0].SupportedCPU}}},
+        {"$match" : {VendorName : {"$eq" : motherObject[0].SupportedCPU}}},
         { "$sample": { "size": 1 } }]
 
         let process = await processor.aggregate(processorQuery)
@@ -48,9 +48,9 @@ router.get('/', async(req, res, next) =>{
 
         //Ram
 
-        const ramQuery = [{"$match" : {"Price(tk)" : {$lte:parseInt(req.query.ram)+500, $gte:parseInt(req.query.ram)-500}}},
-        {"$match" : {"Memory Type" : {"$eq" : motherObject[0].MemoryType}}},
-        {"$match" : {"Capacity(GB)" : {"$lte" : motherObject[0]['MaxMemory (GB)']}}},
+        const ramQuery = [{"$match" : {Price : {$lte:parseInt(req.query.ram)+500, $gte:parseInt(req.query.ram)-500}}},
+        {"$match" : {MemoryType : {"$eq" : motherObject[0].MemoryType}}},
+        {"$match" : {Capacity : {"$lte" : motherObject[0].MaxMemory}}},
         { "$sample": { "size": 1 } }]
 
         let Ram = await ram.aggregate(ramQuery)
@@ -116,21 +116,21 @@ router.get('/', async(req, res, next) =>{
         const moniObject = Object.assign({}, moni)
         
 
-        let total = motherObject[0].Price + proObject[0].Price + ramObject[0]["Price(tk)"] + 
+        let total = motherObject[0].Price + proObject[0].Price + ramObject[0].Price + 
         powerObject[0].Price + storeObject[0].Price + moniObject[0].Price
 
 
 
         res.status(200).json({
             success : true,
-            "total price" : total,
+            totalPrice : total,
             msg : "all component found",
-            MOTHERBOARD : MB,
-            RAM : Ram,
-            PROCESSOR : process,
-            POWERSUPPLY : power,
-            STORAGE : store,
-            MONITOR : moni
+            MOTHERBOARD : motherObject[0],
+            RAM : ramObject[0],
+            PROCESSOR : proObject[0],
+            POWERSUPPLY : powerObject[0],
+            STORAGE : storeObject[0],
+            MONITOR : moniObject[0]
         })
 
     }catch(err){

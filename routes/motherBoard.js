@@ -40,10 +40,9 @@ router.post('/', async(req, res, next) =>{
         motherBoard.Model = req.body.Model
         motherBoard.MemoryType = req.body.MemoryType
         motherBoard.MemorySlots = req.body.MemorySlots
-        motherBoard['MaxMemory (GB)'] = req.body['MaxMemory (GB)']
+        motherBoard.MaxMemory = req.body.MaxMemory
         motherBoard.Price = req.body.Price
         motherBoard.SupportedCPU = req.body.SupportedCPU
-        motherBoard.Gen = req.body.Gen
 
         await motherBoard.save()
 

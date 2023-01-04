@@ -28,7 +28,7 @@ router.get('/', async(req, res, next) =>{
 
         //processor
 
-        const processorQuery = {Price : {$lte:parseInt(req.query.pros)},"Vendor Name" : {"$eq" : motherObject[0].SupportedCPU}}
+        const processorQuery = {Price : {$lte:parseInt(req.query.pros)}, VendorName : {"$eq" : motherObject[0].SupportedCPU}}
 
         let process = await processor.find(processorQuery).sort({"Price" : -1}).limit(1)
 
@@ -43,12 +43,19 @@ router.get('/', async(req, res, next) =>{
 
         //Ram
 
-        const ramQuery = {"Price(tk)" : {$lte:parseInt(req.query.ram)*0.50},
-        "Memory Type" : {"$eq" : motherObject[0].MemoryType},
-        "Capacity(GB)" : {"$lte" : motherObject[0]['MaxMemory (GB)']}}
+
+        const ratio = 0.50
+
+        if(req.query.ram <3700){
+            ratio = 1
+        }
+
+        const ramQuery = {Price : {$lte:parseInt(req.query.ram)*ratio},
+        MemoryType : {"$eq" : motherObject[0].MemoryType},
+        Capacity : {"$lte" : motherObject[0].MaxMemory}}
         
 
-        let Ram = await ram.find(ramQuery).sort({"Price(tk)" : -1}).limit(1)
+        let Ram = await ram.find(ramQuery).sort({"Price" : -1}).limit(1)
 
         if(Ram.length === 0){
             return res.json({
@@ -139,7 +146,7 @@ router.get('/', async(req, res, next) =>{
         const gpuObject = Object.assign({}, graphics)
         
 
-        let total = motherObject[0].Price + proObject[0].Price + ramObject[0]["Price(tk)"] + gpuObject[0].Price +
+        let total = motherObject[0].Price + proObject[0].Price + ramObject[0].Price + gpuObject[0].Price +
         powerObject[0].Price + storeHDDObject[0].Price + storeSSDObject[0].Price + moniObject[0].Price
 
 
@@ -148,14 +155,14 @@ router.get('/', async(req, res, next) =>{
             success : true,
             msg : "all component found",
             totalBudget : total,
-            MOTHERBOARD : MB,
-            RAM : Ram,
-            PROCESSOR : process,
-            POWERSUPPLY : power,
-            SSD : storeSSD,
-            HDD : storeHDD,
-            GRAPHICSCARD : graphics,
-            MONITOR : moni
+            MOTHERBOARD : motherObject[0],
+            RAM : ramObject[0],
+            PROCESSOR : proObject[0],
+            POWERSUPPLY : powerObject[0],
+            SSD : storeSSDObject[0],
+            HDD : storeHDDObject[0],
+            GRAPHICSCARD : gpuObject[0],
+            MONITOR : moniObject[0]
         })
 
     }catch(err){

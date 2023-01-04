@@ -3,15 +3,15 @@ const mongoose = require('mongoose')
 
 const RamSchema = new mongoose.Schema({
 
-    "Vendor Name" : {
+    VendorName : {
         require : true,
         type : String
     },
-    "Memory Type" : {
+    MemoryType : {
         require : true,
         type : String
     },
-    "Bus Speed(Mhz)" : {
+    BusSpeed : {
         require : true,
         type : Number,
 
@@ -20,7 +20,7 @@ const RamSchema = new mongoose.Schema({
             message   : '{VALUE} is not an integer value'
         }
     },
-    "Capacity(GB)" : {
+    Capacity : {
         require : true,
         type : Number,
 
@@ -34,7 +34,7 @@ const RamSchema = new mongoose.Schema({
         type : String
     },
     
-    "Price(tk)" : {
+    Price : {
         require : true,
         type : Number,
 
