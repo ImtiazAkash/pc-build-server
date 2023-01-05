@@ -46,9 +46,6 @@ router.get('/', async(req, res, next) =>{
 
         const ratio = 0.50
 
-        if(req.query.ram <3700){
-            ratio = 1
-        }
 
         const ramQuery = {Price : {$lte:parseInt(req.query.ram)*ratio},
         MemoryType : {"$eq" : motherObject[0].MemoryType},
