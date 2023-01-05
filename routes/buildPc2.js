@@ -140,7 +140,7 @@ router.get('/', async(req, res, next) =>{
                 msg : "all component found",
                 totalBudget : total,
                 MOTHERBOARD : motherObject[0],
-                RAM : ramObject[0],
+                RAM1 : ramObject[0],
                 PROCESSOR : proObject[0],
                 POWERSUPPLY : powerObject[0],
                 SSD : storeSSDObject[0],
