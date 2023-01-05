@@ -48,7 +48,13 @@ router.get('/', async(req, res, next) =>{
 
         //Ram
 
-        const ramQuery = [{"$match" : {Price : {$lte:parseInt(req.query.ram)+500, $gte:parseInt(req.query.ram)-500}}},
+        let ratio = 0.50
+
+        if(req.query.ram <3700){
+            ratio = 1
+        }
+
+        const ramQuery = [{"$match" : {Price : {$lte:parseInt(req.query.ram)*ratio+500, $gte:parseInt(req.query.ram)*ratio-500}}},
         {"$match" : {MemoryType : {"$eq" : motherObject[0].MemoryType}}},
         {"$match" : {Capacity : {"$lte" : motherObject[0].MaxMemory}}},
         { "$sample": { "size": 1 } }]
@@ -82,14 +88,30 @@ router.get('/', async(req, res, next) =>{
 
         //storage
 
-        const storageQuery = [{"$match" : {Price : {$lte:parseInt(req.query.st)+500, $gte:parseInt(req.query.st)-500}}},
-        { "$sample": { "size": 1 } }]
+        //SSD
 
-        let store = await storage.aggregate(storageQuery)
-        if(store.length === 0){
+        const storageQuery = {Price : {$lte:parseInt(req.query.st)*0.35},
+            Type : {$eq : "SSD"}}
+
+        let storeSSD = await storage.find(storageQuery).sort({"Price" : -1}).limit(1)
+        if(storeSSD.length === 0){
             return res.json({
                 success : false,
-                msg : "no storage supply found"
+                msg : "no SSD found"
+            })
+        }
+
+
+        //HDD
+
+        const storage2Query = {Price : {$lte:parseInt(req.query.st)*0.65},
+            Type : {$eq : "HDD"}}
+
+        let storeHDD = await storage.find(storage2Query).sort({"Price" : -1}).limit(1)
+        if(storeHDD.length === 0){
+            return res.json({
+                success : false,
+                msg : "no HDD found"
             })
         }
 
@@ -112,12 +134,13 @@ router.get('/', async(req, res, next) =>{
         const ramObject = Object.assign({}, Ram)
         const proObject = Object.assign({}, process)
         const powerObject = Object.assign({}, power)
-        const storeObject = Object.assign({}, store)
+        const storeHDDObject = Object.assign({}, storeHDD)
+        const storeSSDObject = Object.assign({}, storeSSD)
         const moniObject = Object.assign({}, moni)
         
 
         let total = motherObject[0].Price + proObject[0].Price + ramObject[0].Price + 
-        powerObject[0].Price + storeObject[0].Price + moniObject[0].Price
+        powerObject[0].Price + storeHDDObject[0].Price + storeSSDObject[0].Price + moniObject[0].Price
 
 
 
