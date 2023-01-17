@@ -4,9 +4,10 @@ const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const { raw } = require('express')
 const jwt = require("jsonwebtoken");
+const checkLogin = require('../middlewares/checkLogin')
 
 
-router.get('/findById', async(req, res, next)=>{
+router.get('/findById', checkLogin, async(req, res, next)=>{
     try{
 
         const user = await User.findById()
@@ -73,7 +74,7 @@ router.post('/register',async (req, res, next) =>{
 
 })
 
-router.get('/users',async(req, res, next)=>{
+router.get('/users', checkLogin, async(req, res, next)=>{
     let getAllUser = await User.find()
     res.status(200).json(getAllUser)
 })

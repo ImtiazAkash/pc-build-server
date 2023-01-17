@@ -29,7 +29,7 @@ router.get('/',  async(req, res, next) =>{
 
 
 
-router.post('/', async(req, res, next) =>{
+router.post('/', checkLogin, async(req, res, next) =>{
 
     const { VendorName, Model, Type, Capacity, Resolution, Price } = req.body
 
@@ -63,7 +63,7 @@ router.post('/', async(req, res, next) =>{
 
 
 
-router.put('/:id', async(req, res, next) =>{
+router.put('/:id', checkLogin, async(req, res, next) =>{
 
     try{
 
@@ -98,7 +98,7 @@ router.put('/:id', async(req, res, next) =>{
 })
 
 
-router.delete('/:id', async(req, res, next) =>{
+router.delete('/:id', checkLogin, async(req, res, next) =>{
 
     try{
 

@@ -2,6 +2,7 @@ const express = require('express')
 const PowerSupply = require('../models/PowerSupply')
 const PS = require('../models/PowerSupply')
 const router = express.Router()
+const checkLogin = require("../middlewares/checkLogin")
 
 
 router.get('/', async(req, res, next) =>{
@@ -28,7 +29,7 @@ router.get('/', async(req, res, next) =>{
 
 
 
-router.post('/', async(req, res, next) =>{
+router.post('/', checkLogin, async(req, res, next) =>{
 
     const { VendorName, Model, PowerInW, Price } = req.body
 
@@ -60,7 +61,7 @@ router.post('/', async(req, res, next) =>{
 
 
 
-router.put('/:id', async(req, res, next) =>{
+router.put('/:id', checkLogin, async(req, res, next) =>{
 
     try{
 
@@ -95,7 +96,7 @@ router.put('/:id', async(req, res, next) =>{
 })
 
 
-router.delete('/:id', async(req, res, next) =>{
+router.delete('/:id', checkLogin, async(req, res, next) =>{
 
     try{
 
