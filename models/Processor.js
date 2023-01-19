@@ -31,12 +31,8 @@ const ProcessorSchema = new mongoose.Schema({
     },
     Series : {
         require : true,
-        type : Number,
+        type : String,
 
-        validate : {
-            validator : Number.isInteger,
-            message   : '{VALUE} is not an integer value'
-        }
     },
     VideoRam : {
         require : true,

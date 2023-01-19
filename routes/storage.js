@@ -1,7 +1,7 @@
 const express = require('express')
 const Storage = require('../models/Storage')
 const router = express.Router()
-const checkLogin = require('../middlewares/checkLogin')
+const checkLogin = require ('../middlewares/checkLogin')
 
 
 router.get('/', async(req, res, next) =>{
