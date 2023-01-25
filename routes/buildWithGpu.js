@@ -44,7 +44,10 @@ router.get('/', async(req, res, next) =>{
         //Ram
 
 
-        const ratio = 0.50
+        let ratio = 0.50
+        if(req.query.ram <3700){
+            ratio = 1
+        }
 
 
         const ramQuery = {Price : {$lte:parseInt(req.query.ram)*ratio},
@@ -64,7 +67,7 @@ router.get('/', async(req, res, next) =>{
 
         //power supply
 
-        const powerQuery = {Price : {$lte:parseInt(req.query.ps)}}
+        const powerQuery = {Price : {$lte:parseInt(req.query.ps)}, PowerInW : {$gte: 500}}
 
         let power = await powerSupply.find(powerQuery).sort({"Price" : -1}).limit(1)
 
@@ -87,7 +90,7 @@ router.get('/', async(req, res, next) =>{
         if(storeSSD.length === 0){
             return res.json({
                 success : false,
-                msg : "no storage found"
+                msg : "no SSD found"
             })
         }
 
@@ -101,13 +104,13 @@ router.get('/', async(req, res, next) =>{
         if(storeHDD.length === 0){
             return res.json({
                 success : false,
-                msg : "no storage found"
+                msg : "no HDD found"
             })
         }
 
         //monitor
 
-        const monitorQuery = {Price : {$lte:parseInt(req.query.monitor)}}
+        const monitorQuery = {Price : {$lte:parseInt(req.query.monitor)}, Resolution: {$eq: "1920x1080"}}
 
 
         const moni = await monitor.find(monitorQuery).sort({"Price" : -1}).limit(1)
